@@ -1,0 +1,66 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "3229a4a67c8368dfada36ab3cff7f088",
+    "packages": [
+        {
+            "name": "venjoy/pedy",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/venjoy/pedy.git",
+                "reference": "46b1aa1b3ad2e007a54922233a8d24668909e25f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/venjoy/pedy/zipball/46b1aa1b3ad2e007a54922233a8d24668909e25f",
+                "reference": "46b1aa1b3ad2e007a54922233a8d24668909e25f",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Venjoy\\Pedy\\": "src"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Tests\\": "tests/"
+                }
+            },
+            "scripts": {
+                "test": [
+                    "phpunit --bootstrap vendor/autoload.php tests"
+                ]
+            },
+            "authors": [
+                {
+                    "name": "Joy",
+                    "email": "joy@venjoy.xzy"
+                }
+            ],
+            "description": "PHP Dependency Injection Container and System",
+            "support": {
+                "source": "https://github.com/venjoy/pedy/tree/master",
+                "issues": "https://github.com/venjoy/pedy/issues"
+            },
+            "time": "2017-02-25 13:45:49"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {
+        "venjoy/pedy": 20
+    },
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}
