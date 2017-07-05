@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\Contracts\PathFinder;
+use App\AI\PathFinder;
 
 class AI 
 {
@@ -15,20 +15,28 @@ class AI
         $this->pathFinder = $pathFinder;
     }
 
-    public function nextStep()
+    public function nextMove()
     {
         $wrongNum = $this->findNumOnWrongPos();
         $blankPos = $this->game->curBlankPos();
-                var_dump($blankPos);
-        die();
         $finalBlankPos = $this->posBlankWrtNum($wrongNum);
-        $paths = $this->pathFinder->findPaths( $blankPos, $finalBlankPos, $wrongNum);
-        // $bestPath = $this->findBestPath($paths);
-        // var_dump($bestPath);
-        // die();
-        // $blankMovement = [];
-        // $blankMovement[] = $bestPath[0];
-        // $blankMovement[] = $bestPath[1];
+
+        if ($blankPos == $finalBlankPos)
+        {
+            $movement = [];
+            $movement[] = $blankPos;
+            $movement[] = $this->game->CurrPosNum($wrongNum);
+        }
+        else
+        {
+            $paths = $this->pathFinder->findPaths( $blankPos, $finalBlankPos, $wrongNum);
+            $bestPath = $this->findBestPath($paths);
+            $movement = [];
+            $movement[] = $bestPath[0];
+            $movement[] = $bestPath[1];
+        }
+
+        return $movement;
     }
 
     public function findBestPath($paths)

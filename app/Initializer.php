@@ -29,12 +29,25 @@ class Initializer
 
     public function fromPost($post)
     {
-        $this->initializeDataFromPost($post);    
-        var_dump($this->data);
-        die();
-
+        $this->initializeDataFromPost($post);
 
         $this->game->setData($this->data);
+
+        $this->swap($post);
+        
+        $this->game->setData($this->data);
+
+        if($this->game->checkWin())
+        {
+            echo"<html>";
+            echo'<div class="game">Congrats,you win the game</div>';
+        }
+    }
+
+    public function initNextMove($movement)
+    {
+        $this->data = swapData($this->data, $movement[0], $movement[1]);
+        $this->game->setData($this->data);   
     }
 
     public function initializeDataFromPost($post)
@@ -48,8 +61,25 @@ class Initializer
             $col = $exp[1];
             $this->data[$row][$col] = $val;
         }
-        var_dump($this->data);
-        die();
+    }
+
+    public function swap($post)
+    {
+        $blankPos = findBlankPos($this->data, $this->game->getSide());
+
+        foreach ($post as $key => $val)
+        {
+            $exp = explode('-', $key);
+            if (count($exp) > 2)
+            {
+                $numToSwapPos[0] = $exp[1];
+                $numToSwapPos[1] = $exp[2];  
+                if (adjacent($blankPos, $numToSwapPos))  
+                {
+                    $this->data = swapData($this->data, $blankPos, $numToSwapPos);
+                }
+            }                
+        }
     }
 
 }

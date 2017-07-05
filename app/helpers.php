@@ -20,18 +20,38 @@ function app($get = null)
     return $get ? $container->get($get) : $container;
 }
 
-function findposzero()
+function findBlankPos($data, $side)
 {
-for($row=0;$row<$this->getside();$row++)
+    for ($row=0; $row < $side; $row++)
     {
-        for($col=0;$col<$this->getside();$col++)
+        for ($col=0; $col < $side; $col++)
         {
-            if($this->data[$row][$col]==NULL)
+            if ($data[$row][$col] == NULL)
             {
-                $x=$row;
-                $y=$col;
+                $blankRow = $row;
+                $blankCol = $col;
             }
         }
     }
-    return array($x, $y);
+
+    return array($blankRow, $blankCol);
+}
+
+function adjacent($pos1, $pos2)
+{
+    $x = $pos1[0];
+    $y = $pos1[1];
+    $a = $pos2[0];
+    $b = $pos2[1];
+
+    return (($a == $x && $b == $y-1) || ($a == $x && $b == $y+1) || ($a == $x-1 && $b == $y) || ($a == $x+1 && $b == $y)) ? 1 : 0;
+}
+
+function swapData($data, $pos1, $pos2)
+{
+    $temp = $data[$pos2[0]][$pos2[1]];
+    $data[$pos2[0]][$pos2[1]] = $data[$pos1[0]][$pos1[1]];
+    $data[$pos1[0]][$pos1[1]] = $temp;
+
+    return $data;
 }
