@@ -44,7 +44,7 @@ class PathFinder implements PathFinderContract
             
         }
         
-        return (count($newPaths) == 0) ? $paths : $this->explorePaths($allPaths, $finBlankPos, $wrtNum);        
+        return (count($newPaths) == 0) ? $allPaths : $this->explorePaths($allPaths, $finBlankPos, $wrtNum);        
     }
 
     public function expandPath($path, $finBlankPos, $wrtNum)

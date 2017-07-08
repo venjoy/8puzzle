@@ -23,6 +23,8 @@ class Initializer
         $this->data[2][0]=1;
         $this->data[2][2]=8;
         $this->data[2][1]=NULL;
+
+        $_SESSION['cyclic'] = false;
         
         $this->game->setData($this->data);
     }

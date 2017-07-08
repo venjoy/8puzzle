@@ -20,6 +20,20 @@ function app($get = null)
     return $get ? $container->get($get) : $container;
 }
 
+function cyclicMovesArray($side, $wrongNum)
+{
+    echo"hie";
+    die();
+}
+
+function getTempPosForCorner($wrongNum, $side)
+{
+    $tempPos[0] = $wrongNum / $side;
+    $tempPos[1] = ($wrongNum - 2) % $side;
+
+    return $tempPos;
+}
+
 function findBlankPos($data, $side)
 {
     for ($row=0; $row < $side; $row++)

@@ -4,5 +4,5 @@ namespace App\Contracts;
 
 interface Movement
 {
-    public function findNextMove();
+    public function findNextMove($wrongNum);
 }

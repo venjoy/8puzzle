@@ -20,12 +20,9 @@
                 if($_POST['next'] == 'next')
                 {
                     $_SESSION['ai'] = true;
-                    // $pathFinder = new App\AI\PathFinder($game);
-                    // $ai = new App\AI($game, $pathFinder);
-                    // $s = $ai->nextStep();
                     app('App\Initializer')->fromPost($_POST);
-                    $blankMovement = app('App\AI')->nextMove();
-                    app('App\Initializer')->initNextMove($blankMovement);
+                    $movement = app('App\AI')->nextMove();
+                    app('App\Initializer')->initNextMove($movement);
                 }
                 else
                 {

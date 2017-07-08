@@ -101,8 +101,7 @@ class Game
                if($this->data[$x][$y+1]!=NULL)
                 {
                     $this->swap($x,$y+1,$x,$y);
-                }
-               
+                }              
            }
         }
 
