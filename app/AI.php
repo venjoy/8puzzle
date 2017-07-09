@@ -25,14 +25,14 @@ class AI
 
         if ($this->isSpecial($wrongNum))
         {
-            $movement = $this->specMovement->findNextMove($wrongNum);
+            $movements = $this->specMovement->findNextMove($wrongNum);
         }
-        else if($this->isGeneral($wrongNum))
+        else if ($this->isGeneral($wrongNum))
         {
-            $movement = $this->genMovement->findNextMove($wrongNum);
+            $movements = $this->genMovement->findNextMove($wrongNum);
         }
 
-        return $movement;
+        return $movements;
     }
 
     public function isGeneral($num)
@@ -46,7 +46,7 @@ class AI
     {
         $side = $this->game->getSide();
         
-        return (($num % $side) == 0 || $_SESSION['cyclic']) ? 1 : 0;
+        return (($num % $side) == 0) ? 1 : 0;
     }  
 
     public function findNumOnWrongPos()

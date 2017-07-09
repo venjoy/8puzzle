@@ -21,41 +21,34 @@ class SpecialMovement implements Movement
     {
         //case when 3 is at [1,2] and blank at [0,2]
 
-
-        //performing cyclic movement
-        if ($_SESSION['cyclic'])
-        {
-            $movement = $this->cyclicMovement($wrongNum);
-            return $movement;
-        }
-
         //placing corner element at [cornerRow+1][cornerCol-1]
         $tempPos = getTempPosForCorner($wrongNum, $this->game->getSide());
         if ($this->game->getValue($tempPos[0], $tempPos[1]) != $wrongNum)
         {
-            $movement = $this->moveCornerToReq($wrongNum);
-            return $movement;
+            $movements = $this->moveCornerToReq($wrongNum);
+            return $movements;
         }
 
         //placing blank at required position
         if ($this->game->getValue($tempPos[0],0) != NULL)
         {
-            $movement = $this->moveBlank($wrongNum);
-            return $movement;
+            $movements = $this->moveBlank($wrongNum);
+            return $movements;
         }
 
-        //setting cyclic movement and performing
+        //performing cyclic movement
         if($this->game->getValue($tempPos[0], $tempPos[1]) == $wrongNum && $this->game->getValue($tempPos[0],0) == NULL)
         {
-            $_SESSION['cyclic'] = 1;
-            $movement = $this->cyclicMovement($wrongNum);
-            return $movement;
+            $movements = $this->cyclicMovement($wrongNum);
+            return $movements;
         }
     }
 
     public function cyclicMovement($wrongNum)
     {
         $movements = cyclicMovesArray($this->game->getSide(), $wrongNum);
+
+        return $movements;
     }
 
     public function moveCornerToReq($wrongNum)
@@ -67,17 +60,16 @@ class SpecialMovement implements Movement
             $movement = [];
             $movement[] = $blankPos;
             $movement[] = $this->game->CurrPosNum($wrongNum);
+            $movements = [$movement];
         }
         else
         {
             $paths = $this->pathFinder->findPaths( $blankPos, $finalBlankPos, $wrongNum);           
             $bestPath = $this->findBestPath($paths);
-            $movement = [];
-            $movement[] = $bestPath[0];
-            $movement[] = $bestPath[1];
+            $movements = movementsArray($bestPath);
         }
 
-        return ($movement);
+        return ($movements);
     }
 
     public function moveBlank($wrongNum)
@@ -87,11 +79,9 @@ class SpecialMovement implements Movement
         $finalBlankPos = [$row,0];
         $paths = $this->pathFinder->findPaths( $blankPos, $finalBlankPos, $wrongNum);
         $bestPath = $this->findBestPath($paths);
-        $movement = [];
-        $movement[] = $bestPath[0];
-        $movement[] = $bestPath[1];
+        $movements = movementsArray($bestPath);
 
-        return $movement;
+        return $movements;
     }
 
     public function findBestPath($paths)

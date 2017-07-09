@@ -9,20 +9,46 @@
     <body>
         <?php 
             $game = app(App\Game::class);
-            $_SESSION['ai'] = false;
     
             if (!isset($_POST['0-0']) && !isset($_POST['0-1']))
             {
+                //fromSize() also unsets session variables ai and cyclic
                 app('App\Initializer')->fromSize();
             } 
             else 
             {
-                if($_POST['next'] == 'next')
+                if(($_POST['next'] == 'next') && ! ($_SESSION['ai']))
                 {
+                    $_SESSION['movements'] = [];
+                    $_SESSION['index'] = 0;
                     $_SESSION['ai'] = true;
+
+                    //storing movements
                     app('App\Initializer')->fromPost($_POST);
-                    $movement = app('App\AI')->nextMove();
+                    // while (! ($game->checkWin()))
+                    for ($i=1;$i<=20;$i++)
+                    {
+                        $movements = app('App\AI')->nextMove();
+
+                        foreach ($movements as $movement)
+                        {
+                            $_SESSION['movements'][] = $movement;
+                            app('App\Initializer')->initNextMove($movement);
+                        }
+                    }
+
+                    //running first move
+                    app('App\Initializer')->fromPost($_POST);
+                    $movement = $_SESSION['movements'][$_SESSION['index']];
+                    $_SESSION['index']++;
                     app('App\Initializer')->initNextMove($movement);
+                }
+                else if (($_POST['next'] == 'next') && $_SESSION['ai'])
+                {
+                    app('App\Initializer')->fromPost($_POST);
+                    $movement = $_SESSION['movements'][$_SESSION['index']];
+                    $_SESSION['index']++;
+                    app('App\Initializer')->initNextMove($movement);                
                 }
                 else
                 {

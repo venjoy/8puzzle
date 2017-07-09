@@ -22,8 +22,53 @@ function app($get = null)
 
 function cyclicMovesArray($side, $wrongNum)
 {
-    echo"hie";
-    die();
+    $path = [];
+    $tempPos = getTempPosForCorner($wrongNum, $side);
+    $currPos = [$tempPos[0], 0];
+    //computing path array for the cycle
+    $path[] = $currPos;
+    $currPos = goUp($currPos);
+    $path[] = $currPos;
+    for ($i = 1; $i <= $side-2; $i++)
+    {
+        $currPos = goRight($currPos);
+        $path[] = $currPos;
+    }
+    $currPos = goDown($currPos);
+    $path[] = $currPos;
+    $currPos = goRight($currPos);
+    $path[] = $currPos;
+    $currPos = goUp($currPos);
+    $path[] = $currPos;
+    for ($i = 1; $i <= $side-1; $i++)
+    {
+        $currPos = goLeft($currPos);
+        $path[] = $currPos;
+    }
+    $currPos = goDown($currPos);
+    $path[] = $currPos;
+
+    $movements = movementsArray($path);
+    return $movements;
+}
+
+function movementsArray($bestPath)
+{
+    $movements = [];
+    $lastPos = NULL;
+    foreach ($bestPath as $currPos)
+    {
+        if ($lastPos != NULL)
+        {
+            $movement = [];
+            $movement[] = $lastPos;
+            $movement[] = $currPos;
+            $movements[] = $movement;
+        }
+        $lastPos = $currPos;
+    }
+    
+    return $movements;
 }
 
 function getTempPosForCorner($wrongNum, $side)
@@ -68,4 +113,28 @@ function swapData($data, $pos1, $pos2)
     $data[$pos1[0]][$pos1[1]] = $temp;
 
     return $data;
+}
+
+function goUp($pos)
+{
+    $newPos = [$pos[0] - 1, $pos[1]];
+    return $newPos;
+}
+
+function goDown($pos)
+{
+    $newPos = [$pos[0] + 1, $pos[1]];
+    return $newPos;
+}
+
+function goLeft($pos)
+{
+    $newPos = [$pos[0], $pos[1] - 1];
+    return $newPos;
+}
+
+function goRight($pos)
+{
+    $newPos = [$pos[0], $pos[1] + 1];
+    return $newPos;
 }

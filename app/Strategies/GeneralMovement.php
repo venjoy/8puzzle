@@ -27,17 +27,16 @@ class GeneralMovement implements Movement
             $movement = [];
             $movement[] = $blankPos;
             $movement[] = $this->game->CurrPosNum($wrongNum);
+            $movements = [$movement];
         }
         else
         {
             $paths = $this->pathFinder->findPaths( $blankPos, $finalBlankPos, $wrongNum);
             $bestPath = $this->findBestPath($paths);
-            $movement = [];
-            $movement[] = $bestPath[0];
-            $movement[] = $bestPath[1];
+            $movements = movementsArray($bestPath);
         }
 
-        return ($movement);
+        return ($movements);
     }
 
     public function findBestPath($paths)

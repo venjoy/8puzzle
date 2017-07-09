@@ -25,6 +25,7 @@ class Initializer
         $this->data[2][1]=NULL;
 
         $_SESSION['cyclic'] = false;
+        $_SESSION['ai'] = false;
         
         $this->game->setData($this->data);
     }
