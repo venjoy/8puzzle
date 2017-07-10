@@ -33,14 +33,12 @@ class Initializer
     public function fromPost($post)
     {
         $this->initializeDataFromPost($post);
-
         $this->game->setData($this->data);
 
-        $this->swap($post);
-        
+        $this->swap($post);        
         $this->game->setData($this->data);
 
-        if($this->game->checkWin())
+        if ($this->game->checkWin())
         {
             echo"<html>";
             echo'<div class="game">Congrats,you win the game</div>';
@@ -51,6 +49,11 @@ class Initializer
     {
         $this->data = swapData($this->data, $movement[0], $movement[1]);
         $this->game->setData($this->data);   
+        // if ($this->game->checkWin())
+        // {
+        //     echo"<html>";
+        //     echo'<div class="game">Congrats,you win the game</div>';
+        // }
     }
 
     public function initializeDataFromPost($post)

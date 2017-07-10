@@ -1,4 +1,5 @@
 <form class="form" action="index.php" method="post">
+    <button name="back" value="back" type="submit">BACK</button> 
     <table>
         <?php for ($row = 0; $row < $game->getSide(); $row++): ?>
         <tr>

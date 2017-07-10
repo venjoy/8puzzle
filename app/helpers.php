@@ -20,39 +20,7 @@ function app($get = null)
     return $get ? $container->get($get) : $container;
 }
 
-function cyclicMovesArray($side, $wrongNum)
-{
-    $path = [];
-    $tempPos = getTempPosForCorner($wrongNum, $side);
-    $currPos = [$tempPos[0], 0];
-    //computing path array for the cycle
-    $path[] = $currPos;
-    $currPos = goUp($currPos);
-    $path[] = $currPos;
-    for ($i = 1; $i <= $side-2; $i++)
-    {
-        $currPos = goRight($currPos);
-        $path[] = $currPos;
-    }
-    $currPos = goDown($currPos);
-    $path[] = $currPos;
-    $currPos = goRight($currPos);
-    $path[] = $currPos;
-    $currPos = goUp($currPos);
-    $path[] = $currPos;
-    for ($i = 1; $i <= $side-1; $i++)
-    {
-        $currPos = goLeft($currPos);
-        $path[] = $currPos;
-    }
-    $currPos = goDown($currPos);
-    $path[] = $currPos;
-
-    $movements = movementsArray($path);
-    return $movements;
-}
-
-function movementsArray($bestPath)
+function movementsFromPath($bestPath)
 {
     $movements = [];
     $lastPos = NULL;

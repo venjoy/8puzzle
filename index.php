@@ -50,9 +50,17 @@
                     $_SESSION['index']++;
                     app('App\Initializer')->initNextMove($movement);                
                 }
+                else if($_POST['back'] == 'back')
+                {
+                    app('App\Initializer')->fromPost($_POST);
+                    $_SESSION['index']--;
+                    $movement = $_SESSION['movements'][$_SESSION['index']];
+                    app('App\Initializer')->initNextMove($movement);
+                }
                 else
                 {
                         app('App\Initializer')->fromPost($_POST);
+                        $_SESSION['ai'] = false;
                 }
             }
         ?>

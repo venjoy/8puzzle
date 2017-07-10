@@ -10,11 +10,13 @@ class GeneralMovement implements Movement
 {
     protected $game;
     protected $pathFinder;
+    protected $deadlockMovement;
 
-    public function __construct(Game $game, PathFinder $pathFinder)
+    public function __construct(Game $game, PathFinder $pathFinder, DeadlockMovement $deadlockMovement)
     {
         $this->game = $game;
-        $this->pathFinder = $pathFinder;    
+        $this->pathFinder = $pathFinder;
+        $this->deadlockMovement = $deadlockMovement;    
     }
 
     public function findNextMove($wrongNum)
@@ -33,7 +35,14 @@ class GeneralMovement implements Movement
         {
             $paths = $this->pathFinder->findPaths( $blankPos, $finalBlankPos, $wrongNum);
             $bestPath = $this->findBestPath($paths);
-            $movements = movementsArray($bestPath);
+            $movements = movementsFromPath($bestPath);
+        }
+
+        //deadlock for 5 when blank is at [2,0], 4 above it and 5 at pos right of it
+        //this deadlock can come for 10,11 in case of 4*4 matrix
+        if ($movements == NULL)
+        {
+            $movements = $this->deadlockMovement->getRotationMoves($wrongNum);
         }
 
         return ($movements);

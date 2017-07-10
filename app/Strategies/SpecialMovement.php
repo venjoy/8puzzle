@@ -10,43 +10,65 @@ class SpecialMovement implements Movement
 {
     protected $game;
     protected $pathFinder;
+    protected $deadlockMovement;
 
-    public function __construct(Game $game, PathFinder $pathFinder)
+    public function __construct(Game $game, PathFinder $pathFinder, DeadlockMovement $deadlockMovement)
     {
         $this->game = $game;
-        $this->pathFinder = $pathFinder;    
+        $this->pathFinder = $pathFinder; 
+        $this->deadlockMovement = $deadlockMovement;    
     }
 
     public function findNextMove($wrongNum)
     {
-        //case when 3 is at [1,2] and blank at [0,2]
-
-        //placing corner element at [cornerRow+1][cornerCol-1]
         $tempPos = getTempPosForCorner($wrongNum, $this->game->getSide());
-        if ($this->game->getValue($tempPos[0], $tempPos[1]) != $wrongNum)
+
+        //deadlock case when 3 is at [1,2] and blank at [0,2]
+        if ($this->game->getValue($tempPos[0], 2) == $wrongNum && $this->game->getValue($tempPos[0] - 1, 2) == NULL)
         {
-            $movements = $this->moveCornerToReq($wrongNum);
+            $movements = [[[$tempPos[0], 2],[$tempPos[0] - 1, 2]]];
             return $movements;
         }
 
-        //placing blank at required position
-        if ($this->game->getValue($tempPos[0],0) != NULL)
+        $side = $this->game->getSide();
+        if ($wrongNum != $side * ($side - 1))
+        {
+            //placing corner element at [cornerRow+1][cornerCol-1]
+            if ($this->game->getValue($tempPos[0], $tempPos[1]) != $wrongNum)
+            {
+                $movements = $this->moveCornerToReq($wrongNum);
+                return $movements;
+            }
+
+            //placing blank at required position
+            if ($this->game->getValue($tempPos[0],0) != NULL)
+            {
+                $movements = $this->moveBlank($wrongNum);
+                return $movements;
+            }
+
+            //performing cyclic movement
+            if($this->game->getValue($tempPos[0], $tempPos[1]) == $wrongNum && $this->game->getValue($tempPos[0],0) == NULL)
+            {
+                $movements = $this->cyclicMovement($wrongNum);
+                return $movements;
+            }
+        }
+        else 
         {
             $movements = $this->moveBlank($wrongNum);
-            return $movements;
-        }
-
-        //performing cyclic movement
-        if($this->game->getValue($tempPos[0], $tempPos[1]) == $wrongNum && $this->game->getValue($tempPos[0],0) == NULL)
-        {
-            $movements = $this->cyclicMovement($wrongNum);
+            $newmovements = $this->cyclicMovement($wrongNum);
+            foreach ($newmovements as $movement)
+            {
+                $movements[] = $movement;
+            }
             return $movements;
         }
     }
 
     public function cyclicMovement($wrongNum)
     {
-        $movements = cyclicMovesArray($this->game->getSide(), $wrongNum);
+        $movements = $this->deadlockMovement->getCyclicMoves($this->game->getSide(), $wrongNum);
 
         return $movements;
     }
@@ -66,7 +88,7 @@ class SpecialMovement implements Movement
         {
             $paths = $this->pathFinder->findPaths( $blankPos, $finalBlankPos, $wrongNum);           
             $bestPath = $this->findBestPath($paths);
-            $movements = movementsArray($bestPath);
+            $movements = movementsFromPath($bestPath);
         }
 
         return ($movements);
@@ -74,12 +96,14 @@ class SpecialMovement implements Movement
 
     public function moveBlank($wrongNum)
     {
+        $side = $this->game->getSide();
         $blankPos = $this->game->curBlankPos();
         $row = $wrongNum / $this->game->getSide();
         $finalBlankPos = [$row,0];
+        $wrongNum = ($wrongNum == $side * ($side - 1)) ? $wrongNum - 1 : $wrongNum; 
         $paths = $this->pathFinder->findPaths( $blankPos, $finalBlankPos, $wrongNum);
         $bestPath = $this->findBestPath($paths);
-        $movements = movementsArray($bestPath);
+        $movements = movementsFromPath($bestPath);
 
         return $movements;
     }

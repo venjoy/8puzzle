@@ -56,53 +56,50 @@ class Game
     
     public function swapRandom()
     {       
-        for($i=0;$i<100;$i++)
+        for($i = 0; $i < 100; $i++)
         {
-           $rand=rand(1,4);
-           if($rand=='1')
+           $rand = rand(1, 4);
+           if ($rand == '1')
            {
-                $findxy=$this->findposzero();
-                $x=$findxy[0];
-                $y=$findxy[1];
-                if($this->data[$x-1][$y]!=NULL)
+                $findxy = $this->findposzero();
+                $x = $findxy[0];
+                $y = $findxy[1];
+                if ($this->data[$x-1][$y] != NULL)
                 {
-                 $this->swap($x-1,$y,$x,$y);
-                }
-                
+                    $this->swap($x-1, $y, $x, $y);
+                }                
            }
-           if($rand=='2')
+           if ($rand == '2')
            {
-                $findxy=$this->findposzero();
-                $x=$findxy[0];
-                $y=$findxy[1];
-                if($this->data[$x+1][$y]!=NULL)
+                $findxy = $this->findposzero();
+                $x = $findxy[0];
+                $y = $findxy[1];
+                if ($this->data[$x+1][$y] != NULL)
                 {
-                    $this->swap($x+1,$y,$x,$y);
-                }
-                
+                    $this->swap($x+1, $y, $x, $y);
+                }                
            }
-           if($rand=='3')
+           if ($rand == '3')
            {
-               $findxy=$this->findposzero();
-               $x=$findxy[0];
-               $y=$findxy[1];
-               if($this->data[$x][$y-1]!=NULL)
+                $findxy = $this->findposzero();
+                $x = $findxy[0];
+                $y = $findxy[1];
+                if ($this->data[$x][$y-1]!=NULL)
                 {
-                    $this->swap($x,$y-1,$x,$y);
-                }
-               
+                    $this->swap($x, $y-1, $x, $y);
+                }               
            }
-           if($rand=='4')
-           {
-               $findxy=$this->findposzero();
-               $x=$findxy[0];
-               $y=$findxy[1];
+           if ($rand == '4')
+            {
+                $findxy = $this->findposzero();
+                $x = $findxy[0];
+                $y = $findxy[1];
 
-               if($this->data[$x][$y+1]!=NULL)
+                if ($this->data[$x][$y+1] != NULL)
                 {
-                    $this->swap($x,$y+1,$x,$y);
+                    $this->swap($x, $y+1, $x, $y);
                 }              
-           }
+            }
         }
 
     }
