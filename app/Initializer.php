@@ -33,9 +33,8 @@ class Initializer
     public function fromPost($post)
     {
         $this->initializeDataFromPost($post);
-        $this->game->setData($this->data);
 
-        $this->swap($post);        
+        $this->swap($post);
         $this->game->setData($this->data);
 
         if ($this->game->checkWin())
@@ -49,11 +48,11 @@ class Initializer
     {
         $this->data = swapData($this->data, $movement[0], $movement[1]);
         $this->game->setData($this->data);   
-        // if ($this->game->checkWin())
-        // {
-        //     echo"<html>";
-        //     echo'<div class="game">Congrats,you win the game</div>';
-        // }
+        if ($this->game->checkWin() && $_SESSION['ai'])
+        {
+            echo"<html>";
+            echo'<div class="game">Congrats,you win the game</div>';
+        }
     }
 
     public function initializeDataFromPost($post)
@@ -67,6 +66,7 @@ class Initializer
             $col = $exp[1];
             $this->data[$row][$col] = $val;
         }
+        $this->game->setData($this->data);
     }
 
     public function swap($post)

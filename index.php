@@ -21,12 +21,10 @@
                 {
                     $_SESSION['movements'] = [];
                     $_SESSION['index'] = 0;
-                    $_SESSION['ai'] = true;
 
                     //storing movements
-                    app('App\Initializer')->fromPost($_POST);
-                    // while (! ($game->checkWin()))
-                    for ($i=1;$i<=20;$i++)
+                    app('App\Initializer')->initializeDataFromPost($_POST);
+                    while (! ($game->checkWin()))
                     {
                         $movements = app('App\AI')->nextMove();
 
@@ -36,6 +34,7 @@
                             app('App\Initializer')->initNextMove($movement);
                         }
                     }
+                    $_SESSION['ai'] = true;
 
                     //running first move
                     app('App\Initializer')->fromPost($_POST);
@@ -45,18 +44,18 @@
                 }
                 else if (($_POST['next'] == 'next') && $_SESSION['ai'])
                 {
-                    app('App\Initializer')->fromPost($_POST);
+                    app('App\Initializer')->initializeDataFromPost($_POST);
                     $movement = $_SESSION['movements'][$_SESSION['index']];
                     $_SESSION['index']++;
                     app('App\Initializer')->initNextMove($movement);                
                 }
-                else if($_POST['back'] == 'back')
-                {
-                    app('App\Initializer')->fromPost($_POST);
-                    $_SESSION['index']--;
-                    $movement = $_SESSION['movements'][$_SESSION['index']];
-                    app('App\Initializer')->initNextMove($movement);
-                }
+                // else if($_POST['back'] == 'back')
+                // {
+                //     app('App\Initializer')->fromPost($_POST);
+                //     $_SESSION['index']--;
+                //     $movement = $_SESSION['movements'][$_SESSION['index']];
+                //     app('App\Initializer')->initNextMove($movement);
+                // }
                 else
                 {
                         app('App\Initializer')->fromPost($_POST);
